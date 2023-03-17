@@ -3,7 +3,7 @@
 **# Description**
 For this project I was tasked with creating an employee database that can be dynamically updated from the command line
 
-**# User Story**
+**# User Story**  
 AS A business owner  
 I WANT to be able to view and manage the departments, roles, and employees in my company  
 SO THAT I can organize and plan my business
