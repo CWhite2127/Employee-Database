@@ -74,7 +74,7 @@ const initPromptUser = () => {
 
 const viewAllEmployees = () => {
     console.log('You selected view employees')
-        db.query("SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, employee.manager_id FROM employee JOIN role ON (employee.role_id = role.id) JOIN department ON (department.id = role.department_id)", (err, data) => {
+        db.query('SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, " ", manager.last_name) AS manager FROM employee JOIN role ON employee.role_id = role.id JOIN department ON department.id = role.department_id LEFT JOIN employee manager ON employee.manager_id = manager.id', (err, data) => {
             err ? console.log(err) : console.log("\n");
             console.table(data);
 
@@ -128,9 +128,37 @@ const addEmployee = () => {
 
 
 const updateEmployeeRole = () => {
-
-
-    initPromptUser()
+        console.log("You have selected update employee role")
+        db.query('SELECT CONCAT(first_name, " ", last_name) AS name, id AS value FROM employee', (err, data) => {
+            db.query('SELECT id AS value, title AS name FROM role', (err, roleData) => {
+                inquirer
+                .prompt([
+                    {
+                        type: "list",
+                        name: "employee_id",
+                        message: "Which eployee's role would you like to update?",
+                        choices: data
+                    },
+                    {
+                        type: "list",
+                        name: "role_id",
+                        message: "Which role do you want to assign the selected employee?",
+                        choices: roleData
+                    }
+                ])
+                .then((data) => {
+                    let id = data.employee_id;
+                    let role_id = data.role_id;
+                    db.query("UPDATE employee SET role_id = ? WHERE id = ?", [role_id, id],
+                    (err, data) => {
+                        err ? console.log(err) : console.log("employee role updated");
+                        initPromptUser()
+                    })
+                } 
+            )
+            
+    })
+})
 }
 
 const viewAllRoles = () => {
