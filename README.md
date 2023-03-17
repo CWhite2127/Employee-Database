@@ -1,7 +1,7 @@
 # Employee-Database
 
 **# Description**
-For this project I was tasked with writing an SVG generator that takes user inputs and then generates an SVG element that also passes Jest Testing
+For this project I was tasked with creating an employee database that can be dynamically updated from the command line
 
 **# User Story**
 AS A business owner  
